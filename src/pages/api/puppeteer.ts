@@ -14,7 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const page2 = await context.newPage();
 
         await page1.goto('https://www.mercadolibre.com.mx/#from=homecom');
-        await page2.goto('https://google.com')
         // Set screen size.
         await page1.setViewport({ width: 1080, height: 1024 });
         // Esperar hasta que el input esté disponible en el DOM
