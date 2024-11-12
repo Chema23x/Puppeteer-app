@@ -5,13 +5,33 @@ import { useState } from 'react';
 export const Interface = () => {
     const [showOptions, setOptions] = useState(false);
     const [chosenProduct, setChosenProduct] = useState<string | null>(null);
-
+    const [prices, setPrices] = useState<number[] | null>(null);
     const props: string[] = [
         "Super Smash Bros. Ultimate",
         "Control de Xbox Series X",
         "Iphone 14",
         "Go pro 12"
     ];
+    const openWebPage = async (title: string) => {
+        try {
+            const response = await fetch('/api/puppeteer', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ title })  // Converts title to a JSON string
+            });
+            const data = await response.json();
+            if(data.length > 0){
+                const sortData= data.sort();
+                setPrices(sortData);
+            }else{
+                setPrices(null);
+            }
+        } catch (error) {
+            console.error('Failed to open web page', error);
+        }
+    };
 
     return (
         <>
@@ -28,6 +48,8 @@ export const Interface = () => {
                                 key={index}
                                 title={title}
                                 setValue={() => setChosenProduct(title)}
+                                start={() => openWebPage(title)}
+                                cleanState={() => setPrices(null)}
                             />
                         ))
                     }
@@ -45,6 +67,10 @@ export const Interface = () => {
                 <Modal
                     title={chosenProduct}
                     close={() => setChosenProduct(null)}
+                    prices={prices}
+                    price1={prices && prices.length >= 1 ? prices[0] : 0}
+                    price2={prices && prices.length >= 1 ? prices[1] : 0}
+                    price3={prices && prices.length >= 1 ? prices[2] : 0}
                 />
             }
         </>

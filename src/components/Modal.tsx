@@ -2,8 +2,12 @@
 type ModalProps = {
     close: (value: null) => void;
     title: string;
+    price1: number;
+    price2: number;
+    price3: number;
+    prices: number[] | null;
 }
-
+ 
 const imgs: { [key: string]: string } = {
     "Super Smash Bros. Ultimate": "/assets/img/juego.jpg",
     "Control de Xbox Series X": "/assets/img/control.jpg",
@@ -11,7 +15,7 @@ const imgs: { [key: string]: string } = {
     "Go pro 12": "/assets/img/camara.jpg"
 };
 
-export const Modal = ({ close, title }: ModalProps) => {
+export const Modal = ({ close, title, price1, price2, price3, prices }: ModalProps) => {
     return (
         <section className="h-screen w-full inset-0 absolute flex justify-center items-center">
             <div className="w-1/2 h-3/4 bg-white rounded-md shadow-md relative flex flex-col p-20 gap-y-20  items-center">
@@ -24,14 +28,30 @@ export const Modal = ({ close, title }: ModalProps) => {
                 <div className="flex justify-between w-full">
                     <img className="w-1/2 h-52 object-contain" src={imgs[title]} alt="producto" />
                     <div className="w-1/2 flex flex-col items-center">
-                        <h4 className="text-2xl font-bold pl-14">Mejor precio</h4>
-                        <span></span>
+                        <h4 className="text-2xl font-bold">Mejor precio</h4>
+                        {prices ?
+                            <div className="h-full border w-full flex flex-col justify-evenly items-center font-bold text-xl">
+                                <span className="text-green-600">${price1}</span>
+                                <span className="text-orange-400">${price2}</span>
+                                <span className="text-red-600">${price3}</span>
+                            </div>
+                            :
+                            <div className="flex w-full h-full text-5xl justify-center items-center ">
+                                <span className="effect">C</span>
+                                <span className="effect">a</span>
+                                <span className="effect">r</span>
+                                <span className="effect">g</span>
+                                <span className="effect">a</span>
+                                <span className="effect">n</span>
+                                <span className="effect">d</span>
+                                <span className="effect">o</span>
+                            </div>
+                        }
                     </div>
                 </div>
                 <div className="absolute bottom-10  w-full">
                     <h4 className="font-bold mb-4 w-full text-center">Sitios consultados</h4>
                     <div className="w-full flex justify-evenly">
-                        <span className="border border-black hover:bg-black hover:text-white rounded-lg px-5">Walmart</span>
                         <span className="border border-black hover:bg-black hover:text-white rounded-lg px-5">Amazon</span>
                         <span className="border border-black hover:bg-black hover:text-white rounded-lg px-5">Mercado Libre</span>
                         <span className="border border-black hover:bg-black hover:text-white rounded-lg px-5">Liverpool</span>
