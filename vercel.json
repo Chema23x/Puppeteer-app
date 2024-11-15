@@ -1,7 +1,0 @@
-{
-    "functions": {
-      "api/puppeteer.ts": {
-        "includeFiles": "./node_modules/**/*"
-      }
-    }
-  }
