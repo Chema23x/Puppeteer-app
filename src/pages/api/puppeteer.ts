@@ -14,7 +14,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             headless: chromium.headless,
             slowMo: 200,
         });
-
+        console.log("2")
         const searchMercadoLibre = async () => {
             const page1 = await browser.newPage();
             await page1.goto('https://www.mercadolibre.com.mx/#from=homecom');
