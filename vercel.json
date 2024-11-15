@@ -1,6 +1,6 @@
 {
     "functions": {
-      "api/puppeteer.js": {
+      "api/puppeteer.ts": {
         "includeFiles": "./node_modules/**/*"
       }
     }
