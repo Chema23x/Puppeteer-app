@@ -1,3 +1,4 @@
+import Image from "next/image";
 
 type ModalProps = {
     close: (value: null) => void;
@@ -5,7 +6,10 @@ type ModalProps = {
     price1: number;
     price2: number;
     price3: number;
-    prices: number[] | null;
+    company1: string;
+    company2: string;
+    company3: string;
+    prices: object | null;
 }
  
 const imgs: { [key: string]: string } = {
@@ -15,7 +19,7 @@ const imgs: { [key: string]: string } = {
     "Go pro 12": "/assets/img/camara.jpg"
 };
 
-export const Modal = ({ close, title, price1, price2, price3, prices }: ModalProps) => {
+export const Modal = ({ close, title, price1, price2, price3, prices, company1,company2,company3 }: ModalProps) => {
     return (
         <section className="h-screen w-full inset-0 absolute flex justify-center items-center">
             <div className="w-1/2 h-3/4 bg-white rounded-md shadow-md relative flex flex-col p-20 gap-y-20  items-center">
@@ -25,17 +29,17 @@ export const Modal = ({ close, title, price1, price2, price3, prices }: ModalPro
                     </svg>
                 </button>
                 <h3 className="text-4xl font-bold">{title}</h3>
-                <div className="flex justify-between w-full">
-                    <img className="w-1/2 h-52 object-contain" src={imgs[title]} alt="producto" />
+                <div className="flex justify-between item w-full">
+                    <Image 
+                        className="w-5/12 h-52 object-contain" 
+                        src={imgs[title]} 
+                        alt="producto" 
+                        width={500} 
+                        height={500} 
+                    />
                     <div className="w-1/2 flex flex-col items-center">
-                        <h4 className="text-2xl font-bold">Mejor precio</h4>
-                        {prices ?
-                            <div className="h-full border w-full flex flex-col justify-evenly items-center font-bold text-xl">
-                                <span className="text-green-600">${price1}</span>
-                                <span className="text-orange-400">${price2}</span>
-                                <span className="text-red-600">${price3}</span>
-                            </div>
-                            :
+                        <h4 className="text-4xl font-bold">Mejor precio</h4>
+                        {prices == null ?
                             <div className="flex w-full h-full text-5xl justify-center items-center ">
                                 <span className="effect">C</span>
                                 <span className="effect">a</span>
@@ -45,6 +49,46 @@ export const Modal = ({ close, title, price1, price2, price3, prices }: ModalPro
                                 <span className="effect">n</span>
                                 <span className="effect">d</span>
                                 <span className="effect">o</span>
+                            </div>
+                            :
+                            typeof prices == 'object' ?
+                                <div className="h-full w-full flex flex-col justify-center items-center gap-y-5 font-bold text-xl">
+                                    <div className="text-xl">
+                                        <span>{company1}:  </span>
+                                        <span 
+                                            className="text-green-600">   
+                                            {price1.toLocaleString("es-MX", {
+                                                style: "currency",
+                                                currency: "MXN"
+                                            })}
+                                        </span>
+                                    </div>
+                                    <div className="flex w-full text-xs">
+                                        <div className="w-full flex gap-x-2">
+                                            <span>{company2}:</span>
+                                            <span 
+                                                className="text-red-500">
+                                                {price2.toLocaleString("es-MX", {
+                                                    style: "currency",
+                                                    currency: "MXN"
+                                                })}
+                                            </span>
+                                        </div>
+                                        <div className="w-full flex justify-end gap-x-2">
+                                            <span>{company3}:</span>
+                                            <span 
+                                                className="text-red-500">
+                                                {price3.toLocaleString("es-MX", {
+                                                    style: "currency",
+                                                    currency: "MXN"
+                                                })}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            :
+                            <div className="flex w-full h-full text-5xl justify-center items-center ">
+                                <span>{prices}</span>
                             </div>
                         }
                     </div>

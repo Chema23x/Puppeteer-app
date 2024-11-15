@@ -5,7 +5,7 @@ import { useState } from 'react';
 export const Interface = () => {
     const [showOptions, setOptions] = useState(false);
     const [chosenProduct, setChosenProduct] = useState<string | null>(null);
-    const [prices, setPrices] = useState<number[] | null>(null);
+    const [data, setData] = useState<object | null >(null);
     const props: string[] = [
         "Super Smash Bros. Ultimate",
         "Control de Xbox Series X",
@@ -21,18 +21,23 @@ export const Interface = () => {
                 },
                 body: JSON.stringify({ title })  // Converts title to a JSON string
             });
-            const data = await response.json();
-            if(data.length > 0){
-                const sortData= data.sort();
-                setPrices(sortData);
+            const d = await response.json();
+            const values = Object.values(d);
+
+            if(values.length > 0){
+                const sortedData = Object.fromEntries(
+                Object.entries(d).sort(([, priceA], [, priceB]) => Number(priceA) - Number(priceB))
+            );
+                const arr = Object.entries(sortedData);
+                setData(arr);
             }else{
-                setPrices(null);
+                setData(null);
             }
         } catch (error) {
             console.error('Failed to open web page', error);
         }
     };
-
+    
     return (
         <>
             {showOptions ?
@@ -49,7 +54,7 @@ export const Interface = () => {
                                 title={title}
                                 setValue={() => setChosenProduct(title)}
                                 start={() => openWebPage(title)}
-                                cleanState={() => setPrices(null)}
+                                cleanState={() => setData(null)}
                             />
                         ))
                     }
@@ -67,10 +72,13 @@ export const Interface = () => {
                 <Modal
                     title={chosenProduct}
                     close={() => setChosenProduct(null)}
-                    prices={prices}
-                    price1={prices && prices.length >= 1 ? prices[0] : 0}
-                    price2={prices && prices.length >= 1 ? prices[1] : 0}
-                    price3={prices && prices.length >= 1 ? prices[2] : 0}
+                    prices={data}
+                    price1={Array.isArray(data) && data.length >= 1 ? data[0][1] : 0}
+                    price2={Array.isArray(data) && data.length >= 1 ? data[1][1] : 0}
+                    price3={Array.isArray(data) && data.length >= 1 ? data[2][1] : 0}
+                    company1={Array.isArray(data) && data.length >= 1 ? data[0][0] : 0}
+                    company2={Array.isArray(data) && data.length >= 1 ? data[1][0] : 0}
+                    company3={Array.isArray(data) && data.length >= 1 ? data[2][0] : 0}
                 />
             }
         </>
