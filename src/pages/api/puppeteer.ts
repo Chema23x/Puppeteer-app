@@ -1,20 +1,18 @@
 import puppeteer from 'puppeteer';
-import chromium from "chrome-aws-lambda";
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
-        const executablePath = await chromium.executablePath;
+
         const { title } = req.body;
 
         const browser = await puppeteer.launch({
-            executablePath: executablePath || "/usr/bin/chromium-browser",
-            args: chromium.args,
-            headless: chromium.headless,
+            headless: false,
             slowMo: 200,
+            args: ['--no-sandbox', '--disable-setuid-sandbox'],
         });
-        console.log("2")
+
         const searchMercadoLibre = async () => {
             const page1 = await browser.newPage();
             await page1.goto('https://www.mercadolibre.com.mx/#from=homecom');
